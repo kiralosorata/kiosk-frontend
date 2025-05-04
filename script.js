@@ -6,7 +6,7 @@
  * =====================================================*/
 
 /* ------------------ CONFIG ------------------ */
-const API_ROOT = 'http://localhost:4000'; // change for deployment
+const API_ROOT = 'https://kiosk-backend-s60u.onrender.com'; // change for deployment
 
 /* ------------------ SIMPLE STATE ------------------ */
 let historyStack = [];
