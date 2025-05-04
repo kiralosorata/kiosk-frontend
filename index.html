@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ER Triage Kiosk</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <!-- Sidebar Top -->
+      <div class="sidebar-top">
+        <div class="logo">
+          <img src="assets/logo-icon.png" class="logo-icon" alt="Group 5" />
+          <span class="logo-text">GROUP&nbsp;5</span>
+        </div>
+        <nav class="nav">
+          <a href="#" class="nav-item active">
+            <img src="assets/dashboard-icon.png" class="nav-icon" alt="Dashboard" />
+            <span class="nav-text">Dashboard</span>
+          </a>
+        </nav>
+      </div>
+
+      <!-- Help (tap anywhere to open the HELP flow) -->
+      <div class="help-section" onclick="showScreen('screen-help-offer')">
+        <img src="assets/help-icon.png" class="help-icon" alt="Help" />
+        <span class="help-text">Help</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <!-- Top bar -->
+      <div class="top-bar">
+        <div class="search-section">
+          <input type="text" class="search-input" placeholder="Search Here" />
+          <div class="icon-buttons">
+            <button class="icon-btn"><img src="assets/settings-icon.svg" alt="Settings" /></button>
+            <button class="icon-btn"><img src="assets/notification-icon.svg" alt="Notifications" /></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== KIOSK SCREENS ===== -->
+      <div id="screens">
+
+        <!-- START -->
+        <div class="screen" id="screen-start">
+          <h1>Start Assessment</h1>
+          <button class="btn-primary" data-next="screen-patient-check">Tap to Start</button>
+          <img src="assets/nurses.png" class="illustration" alt="nurses" />
+        </div>
+
+        <!-- PATIENT / PROXY -->
+        <div class="screen hidden" id="screen-patient-check">
+          <h2>Are you the patient or answering for the patient?</h2>
+          <div class="buttons">
+            <button class="btn-primary" data-next="screen-privacy" id="btn-im-patient">Patient</button>
+            <button class="btn-primary" id="answering-for">Answering for Patient</button>
+          </div>
+        </div>
+
+        <!-- RELATIONSHIP -->
+        <div class="screen hidden" id="screen-relation-check">
+          <h2>Relationship with the patient</h2>
+          <div class="buttons">
+            <button class="btn-secondary rel-btn" data-rel="Spouse"  data-next="screen-duration-check">Spouse</button>
+            <button class="btn-secondary rel-btn" data-rel="Parent"  data-next="screen-duration-check">Parent</button>
+            <button class="btn-secondary rel-btn" data-rel="Sibling" data-next="screen-duration-check">Sibling</button>
+            <button class="btn-secondary rel-btn" data-rel="Child"   data-next="screen-duration-check">Child</button>
+            <button class="btn-secondary" id="other-relation">Others: Specify</button>
+          </div>
+        </div>
+
+        <!-- OTHER RELATION -->
+        <div class="screen hidden" id="screen-other-relation">
+          <h2>Specify Relationship:</h2>
+          <input type="text" id="input-other-relation" placeholder="Enter relationship…" />
+          <button class="btn-primary" data-next="screen-duration-check">Proceed</button>
+        </div>
+
+        <!-- DURATION -->
+        <div class="screen hidden" id="screen-duration-check">
+          <h2>How long have you been with the patient?</h2>
+          <div class="buttons">
+            <button class="btn-secondary" data-next="screen-privacy">Less than 30 min</button>
+            <button class="btn-secondary" data-next="screen-privacy">Within 1 hour</button>
+            <button class="btn-secondary" data-next="screen-privacy">More than 2 hours</button>
+          </div>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="screen hidden" id="screen-privacy">
+          <h1>Data Privacy & Confidentiality</h1>
+          <p>We collect information to provide better medical care.</p>
+          <div class="buttons">
+            <!-- If they disagree, branch to the HELP flow instead of a hard reset -->
+            <button class="btn-secondary" data-next="screen-help-offer">Disagree</button>
+            <button class="btn-primary" data-next="screen-identification">Agree</button>
+          </div>
+        </div>
+
+        <!-- IDENTIFICATION -->
+        <div class="screen hidden" id="screen-identification">
+          <h1>Patient Identification</h1>
+          <input type="text" id="philhealth-id" placeholder="Enter PhilHealth ID" />
+          <button class="btn-primary" onclick="lookupID()">Next</button>
+        </div>
+
+        <!-- FOUND -->
+        <div class="screen hidden" id="screen-id-found">
+          <h2>Patient Found</h2>
+          <p>Autofilling patient profile…</p>
+          <button class="btn-primary" data-next="screen-self-assessment">Continue</button>
+        </div>
+
+        <!-- NEW PATIENT -->
+        <div class="screen hidden" id="screen-new-patient">
+          <h2>New Patient</h2>
+          <button class="btn-primary" data-next="screen-new-patient-form">Fill New Patient Form</button>
+        </div>
+
+        <!-- NEW PATIENT FORM -->
+        <div class="screen hidden" id="screen-new-patient-form">
+          <h2>New Patient Registration</h2>
+          <input type="text" id="patient-name" placeholder="Name of Patient" />
+          <input type="number" id="patient-age" placeholder="Age" />
+          <input type="date" placeholder="Birthday" />
+          <input type="text" placeholder="Sex" />
+          <input type="text" placeholder="Contact Number" />
+          <input type="text" placeholder="Address" />
+          <input type="text" placeholder="Emergency Contact" />
+          <button class="btn-primary" data-next="screen-self-assessment">Proceed</button>
+        </div>
+
+        <!-- SELF-ASSESSMENT -->
+        <div class="screen hidden" id="screen-self-assessment">
+          <h1>Self-Assessment</h1>
+
+          <select id="chief-complaint" onchange="toggleOtherInput()">
+            <!-- ─── ESI-1 IMMEDIATE CARE ─────────────────────────────── -->
+            <optgroup label="🛑  ESI 1 – Immediate Care">
+              <!-- B F A S T (Stroke) -->
+              <option>BFAST – Sudden Loss of Balance</option>
+              <option>BFAST – Vision Changes (Eyes)</option>
+              <option>BFAST – Facial Droop</option>
+              <option>BFAST – Arm Weakness / Numbness</option>
+              <option>BFAST – Speech Difficulty</option>
+              <!-- STEMI -->
+              <option>STEMI – Crushing Chest Pain</option>
+              <option>STEMI – Pain Radiating to Arm / Jaw</option>
+              <option>STEMI – Heavy Sweating (Diaphoresis)</option>
+              <option>STEMI – Nausea or Vomiting</option>
+            </optgroup>
+            
+            <!-- ─── OTHER COMPLAINTS ─────────────────────────────────── -->
+            <optgroup label="General Complaints">
+              <option value="">Chief Complaint</option>
+              <option>Difficulty Breathing</option>
+              <option>Chest Pain</option>
+              <option>Abdominal Pain</option>
+              <option>Headache</option>
+              <option>Fever</option>
+              <option>Vomiting</option>
+              <option>Diarrhea</option>
+              <option>Skin Rash</option>
+              <option>Allergic Reaction</option>
+              <option value="Other">Other</option>
+            </optgroup>
+          </select>          
+
+          <input type="text" id="chief-complaint-input" placeholder="Please specify" style="display:none" />
+
+          <input type="number" id="pain-scale" min="0" max="10" placeholder="Pain Scale (0-10)" />
+          <input type="text" id="symptom-checker" placeholder="Describe Symptoms" />
+          <input type="text" id="duration" placeholder="Symptom Duration" />
+          <input type="text" id="body-part" placeholder="Affected Body Part" />
+
+          <button class="btn-primary" id="submit-assessment">Submit</button>
+        </div>
+
+        <!-- RESULTS -->
+        <div class="screen hidden" id="screen-results">
+          <h2>Result</h2>
+          <p id="esi-message"></p>
+          <button class="btn-primary" onclick="resetFlow()">Finish</button>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- ==============  HELP / ASSISTANCE FLOW  ================= -->
+        <!-- ========================================================= -->
+
+        <!-- 1. Offer help / continue -->
+        <div class="screen hidden" id="screen-help-offer">
+          <h1>This system is required for patient intake.</h1>
+          <p>If you need help using it, press the <strong>HELP</strong> button. Otherwise, please continue.</p>
+          <div class="buttons">
+            <button class="btn-secondary" onclick="resetFlow()">Disagree</button>
+            <button class="btn-danger" data-next="screen-intox-check">Help</button>
+            <button class="btn-primary" data-next="screen-identification">Continue</button>
+          </div>
+        </div>
+
+        <!-- 2. Intoxication / pain check -->
+        <div class="screen hidden" id="screen-intox-check">
+          <h1 style="text-transform:uppercase; font-size:1.4rem">Check YES if you are under the influence of alcohol or other substance/s or if you are in pain or unable to continue and would need a nurse to assist you</h1>
+          <div class="buttons" style="gap:3rem; margin:2rem 0">
+            <button class="btn-square" data-next="screen-nurse-assist">YES</button>
+            <button class="btn-square" data-next="screen-identification">NO</button>
+          </div>
+          <p class="fine-print">*Take note that if you press YES and the nurse determines that you are conscious enough, you will be brought back to complete this assessment kiosk.</p>
+        </div>
+
+        <!-- 3. Nurse will assist -->
+        <div class="screen hidden" id="screen-nurse-assist">
+          <h1>You will be assisted by a nurse shortly</h1>
+          <button class="btn-primary" onclick="resetFlow()">Proceed</button>
+        </div>
+
+      </div><!-- /screens -->
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

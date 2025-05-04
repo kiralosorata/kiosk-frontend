@@ -1,0 +1,63 @@
+/* Reset & Base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html { width: 100%; height: 100%; font-family: sans-serif; background: #f4f5f7; }
+
+/* Layout */
+.layout { display: flex; height: 100vh; }
+
+/* Sidebar */
+.sidebar { width: 250px; background: #ffffff; display: flex; flex-direction: column; padding: 20px; }
+
+/* Sidebar Top Section */
+.sidebar-top { display: flex; flex-direction: column; align-items: flex-start; }
+.logo { display: flex; align-items: center; gap: 8px; margin-bottom: 24px; }
+.logo-icon { width: 32px; height: 32px; }
+.logo-text { font-size: 24px; font-weight: bold; color: #418787; }
+
+/* Navigation */
+.nav { display: flex; flex-direction: column; gap: 16px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 32px; text-decoration: none; font-size: 18px; color: #444; }
+.nav-item.active { background: linear-gradient(to right, #64c7c7, #418787); color: white; }
+.nav-icon { width: 20px; height: 20px; }
+
+/* Help Section */
+.help-section { margin-top: auto; display: flex; align-items: center; gap: 8px; padding: 12px 16px; font-size: 14px; color: #999; }
+.help-icon { width: 16px; height: 16px; }
+
+/* Main Content */
+.main-content { flex: 1; background: linear-gradient(to bottom, #64c7c7, #418787); padding: 40px; overflow-y: auto; }
+
+/* Top Bar and Start Assessment Card */
+.top-bar { display: flex; flex-direction: column; gap: 24px; margin-bottom: 40px; }
+
+.search-section { display: flex; justify-content: space-between; align-items: center; background: #ffffff; border-radius: 24px; padding: 10px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.search-input { border: none; outline: none; font-size: 16px; flex: 1; }
+.icon-buttons { display: flex; gap: 10px; }
+.icon-btn { background: #f4f5f7; border: none; border-radius: 12px; padding: 8px; cursor: pointer; }
+.icon-btn img { width: 20px; height: 20px; }
+
+.start-assessment-card { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(to bottom, #64c7c7, #418787); border-radius: 24px; padding: 30px; color: white; }
+.start-text { flex: 1; }
+.start-button { background: white; color: #418787; border: none; border-radius: 24px; padding: 12px 24px; font-size: 18px; font-style: italic; font-weight: bold; margin-top: 20px; cursor: pointer; }
+.nurses-img { width: 150px; height: auto; }
+
+/* Screens Container */
+#screens { width: 100%; margin: 0 auto; position: relative; height: calc(100vh - 80px); }
+
+/* Screen Cards */
+.screen {  width: 100%; top: 0; background: white; border-radius: 24px; padding: 32px; color: #444; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.hidden { display: none; }
+
+/* Typography */
+h1, h2 { margin-bottom: 20px; color: #418787; }
+p { margin-bottom: 20px; color: #444; line-height: 1.4; }
+
+/* Buttons */
+.buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 20px; }
+.btn-primary, .btn-secondary, .btn-danger { flex: 1 1 45%; padding: 12px 20px; border: none; border-radius: 24px; font-size: 16px; cursor: pointer; }
+.btn-primary { background: linear-gradient(to right, #64c7c7, #418787); color: white; }
+.btn-secondary { background: #e0e0e0; color: #418787; }
+.btn-danger { background: #d32f2f; color: white; }
+
+/* Form Elements */
+input, select { display: block; width: 80%; max-width: 100%; margin: 12px auto; padding: 12px 16px; border: 1px solid #ccc; border-radius: 24px; font-size: 1rem; }
